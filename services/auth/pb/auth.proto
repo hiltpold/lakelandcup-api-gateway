@@ -1,4 +1,3 @@
-
 syntax = "proto3";
 
 package auth;
@@ -9,6 +8,7 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Activate(ActivateRequest) returns (ActivateResponse) {}
+  rpc ResendActivationToken(ResendActivationTokenRequest) returns (ResendActivationTokenResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
 }
 
@@ -44,7 +44,16 @@ message ActivateRequest { string token =1; }
 message ActivateResponse {
     int64 status = 1;
     string error = 2;
-  }
+}
+
+// Resend Activation Token
+
+message ResendActivationTokenRequest { string email =1; }
+
+message ResendActivationTokenResponse {
+    int64 status = 1;
+    string error = 2;
+}
 
 // Validate
 

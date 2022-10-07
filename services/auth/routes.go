@@ -17,6 +17,7 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 	routes.POST("/register", svc.Register)
 	routes.POST("/login", svc.Login)
 	routes.POST("/activation/:token", svc.Activation)
+	routes.POST("/activation/token/resend", svc.ResendActivationToken)
 
 	return svc
 }
@@ -30,5 +31,9 @@ func (svc *ServiceClient) Login(ctx *gin.Context) {
 }
 
 func (svc *ServiceClient) Activation(ctx *gin.Context) {
+	handler.Activate(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) ResendActivationToken(ctx *gin.Context) {
 	handler.Activate(ctx, svc.Client)
 }
