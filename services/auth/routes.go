@@ -12,12 +12,15 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 	}
 
 	version := r.Group(("/v1"))
-	routes := version.Group("/auth")
+	authRoutes := version.Group("/auth")
+	userRoutes := authRoutes.Group("/user")
 
-	routes.POST("/register", svc.Register)
-	routes.POST("/login", svc.Login)
-	routes.POST("/activation/:token", svc.Activation)
-	routes.POST("/activation/token/resend", svc.ResendActivationToken)
+	userRoutes.POST("/register", svc.Register)
+	userRoutes.POST("/login", svc.Login)
+	userRoutes.POST("/account/activation/:token", svc.Activation)
+	userRoutes.POST("/account/activation/token/resend", svc.ResendActivationToken)
+	userRoutes.PUT("/account/password", svc.ForgotPassword)
+	userRoutes.PUT("/account/password/reset", svc.ResetPassword)
 
 	return svc
 }
@@ -35,5 +38,13 @@ func (svc *ServiceClient) Activation(ctx *gin.Context) {
 }
 
 func (svc *ServiceClient) ResendActivationToken(ctx *gin.Context) {
-	handler.Activate(ctx, svc.Client)
+	handler.ResendActivationToken(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) ForgotPassword(ctx *gin.Context) {
+	handler.ForgotPassword(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) ResetPassword(ctx *gin.Context) {
+	handler.ResetPassword(ctx, svc.Client)
 }
