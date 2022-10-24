@@ -13,14 +13,14 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 
 	version := r.Group(("/v1"))
 	authRoutes := version.Group("/auth")
-	userRoutes := authRoutes.Group("/user")
+	//userRoutes := authRoutes.Group("/user")
 
-	userRoutes.POST("/register", svc.Register)
-	userRoutes.POST("/login", svc.Login)
-	userRoutes.POST("/account/activation/:token", svc.Activation)
-	userRoutes.POST("/account/activation/token/resend", svc.ResendActivationToken)
-	userRoutes.PUT("/account/password", svc.ForgotPassword)
-	userRoutes.PUT("/account/password/reset", svc.ResetPassword)
+	authRoutes.POST("/user/signup", svc.Register)
+	authRoutes.POST("/user/signin", svc.Login)
+	authRoutes.GET("/account/activation/:token", svc.Activation)
+	authRoutes.POST("/account/activation/token/resend", svc.ResendActivationToken)
+	authRoutes.PUT("/account/password", svc.ForgotPassword)
+	authRoutes.PUT("/account/password/reset", svc.ResetPassword)
 
 	return svc
 }
