@@ -1,5 +1,5 @@
 proto:
 	protoc services/**/pb/*.proto --go_out=. --go-grpc_out=.
 
-dev-server:
+api-gateway-dev:
 	go run main.go

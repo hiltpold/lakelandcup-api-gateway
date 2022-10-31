@@ -12,6 +12,7 @@ service AuthService {
   rpc ForgotPassword(ForgotPasswordRequest) returns (ForgotPasswordResponse) {}
   rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
 }
 
 // TODO: consolidate api responses
@@ -41,6 +42,7 @@ message LoginResponse {
   int64 status = 1;
   string error = 2;
   string token = 3;
+  string refresh_token=4;
 }
 
 // Activate
@@ -88,6 +90,16 @@ message ResetPasswordResponse {
 message ValidateRequest { string token = 1; }
 
 message ValidateResponse {
+  int64 status = 1;
+  string error = 2;
+  string userId = 3;
+}
+
+// Refresh
+
+message RefreshTokenRequest { string refresh_token = 1; }
+
+message RefreshTokenResponse {
   int64 status = 1;
   string error = 2;
   string userId = 3;
