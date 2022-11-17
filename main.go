@@ -24,5 +24,5 @@ func main() {
 
 	auth.RegisterRoutes(r, &c)
 
-	r.Run(c.Port)
+	r.Run(c.Host + ":" + c.Port)
 }
