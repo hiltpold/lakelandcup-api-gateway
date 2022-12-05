@@ -4,15 +4,15 @@ import (
 	"fmt"
 
 	"github.com/hiltpold/lakelandcup-api-gateway/config"
-	"github.com/hiltpold/lakelandcup-api-gateway/services/franchise/pb"
+	"github.com/hiltpold/lakelandcup-api-gateway/services/fantasy/pb"
 	"google.golang.org/grpc"
 )
 
 type ServiceClient struct {
-	Client pb.FranchiseServiceClient
+	Client pb.FantasyServiceClient
 }
 
-func InitServiceClient(c *config.Config) pb.FranchiseServiceClient {
+func InitServiceClient(c *config.Config) pb.FantasyServiceClient {
 	// using WithInsecure() because no SSL running
 	cc, err := grpc.Dial(c.FranchiseSvcUrl, grpc.WithInsecure())
 
@@ -20,5 +20,5 @@ func InitServiceClient(c *config.Config) pb.FranchiseServiceClient {
 		fmt.Println("Could not connect:", err)
 	}
 
-	return pb.NewFranchiseServiceClient(cc)
+	return pb.NewFantasyServiceClient(cc)
 }

@@ -3,8 +3,8 @@ package auth
 import (
 	"fmt"
 
-	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
 	"github.com/hiltpold/lakelandcup-api-gateway/config"
+	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
 	"google.golang.org/grpc"
 )
 
