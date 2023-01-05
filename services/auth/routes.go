@@ -22,9 +22,11 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 	authRoutes.POST("/account/activation/token/resend", svc.ResendActivationToken)
 	authRoutes.PUT("/account/password", svc.ForgotPassword)
 	authRoutes.PUT("/account/password/reset", svc.ResetPassword)
+
 	// TODO: protect routes below
 	authRoutes.GET("/user/signout", svc.SignOut(c))
 	authRoutes.GET("/user", svc.UserInfo)
+	authRoutes.POST("/users", svc.GetUsers)
 	return svc
 }
 
@@ -71,4 +73,8 @@ func (svc *ServiceClient) ForgotPassword(ctx *gin.Context) {
 
 func (svc *ServiceClient) ResetPassword(ctx *gin.Context) {
 	handler.ResetPassword(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetUsers(ctx *gin.Context) {
+	handler.GetUsers(ctx, svc.Client)
 }

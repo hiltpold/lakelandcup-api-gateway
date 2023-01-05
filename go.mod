@@ -1,12 +1,15 @@
 module github.com/hiltpold/lakelandcup-api-gateway
 
-go 1.18
+go 1.19
 
-require github.com/gin-gonic/gin v1.8.1
+require (
+	github.com/gin-contrib/cors v1.4.0
+	github.com/gin-gonic/gin v1.8.1
+	google.golang.org/protobuf v1.28.0
+)
 
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
-	github.com/gin-contrib/cors v1.4.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
@@ -22,7 +25,6 @@ require (
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
 
