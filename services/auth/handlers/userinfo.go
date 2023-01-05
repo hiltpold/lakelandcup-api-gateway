@@ -11,7 +11,8 @@ import (
 func UserInfo(ctx *gin.Context, c pb.AuthServiceClient) {
 	token, _ := ctx.Cookie("lakelandcup_access_token")
 	if token == "" {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
+		//ctx.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
@@ -21,7 +22,7 @@ func UserInfo(ctx *gin.Context, c pb.AuthServiceClient) {
 	})
 
 	if err != nil || res.Status != http.StatusOK {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
 		return
 	}
 
