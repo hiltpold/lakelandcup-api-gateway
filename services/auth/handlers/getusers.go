@@ -8,23 +8,21 @@ import (
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
 )
 
-type GetUsersRequestBody struct {
-	ID string `json:"userId"`
-}
-
 func GetUsers(ctx *gin.Context, c pb.AuthServiceClient) {
-	b := GetUsersRequestBody{}
+	val, _ := ctx.Get("userId")
+	userId, ok := val.(string)
 
-	if err := ctx.BindJSON(&b); err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest})
 		return
 	}
 
-	res, err := c.GetUsers(context.Background(), &pb.GetUsersRequest{UserID: b.ID})
+	res, err := c.GetUsers(context.Background(), &pb.GetUsersRequest{UserID: string(userId)})
 
 	if err != nil {
-		ctx.AbortWithError(http.StatusBadGateway, err)
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "error": err})
 		return
 	}
+
 	ctx.JSON(http.StatusCreated, &res)
 }

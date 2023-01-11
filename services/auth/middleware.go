@@ -1,9 +1,7 @@
 package auth
 
 import (
-	"context"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
@@ -18,26 +16,15 @@ func InitAuthMiddleware(svc *ServiceClient) AuthMiddlewareConfig {
 }
 
 func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
-	authorization := ctx.Request.Header.Get("authorization")
+	access_token, _ := ctx.Cookie("lakelandcup_access_token")
 
-	if authorization == "" {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
-		return
-	}
-
-	token := strings.Split(authorization, "Bearer ")
-
-	if len(token) < 2 {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
-		return
-	}
-
-	res, err := c.svc.Client.Validate(context.Background(), &pb.ValidateRequest{
-		Token: token[1],
+	res, err := c.svc.Client.Validate(ctx, &pb.ValidateRequest{
+		Token:     access_token,
+		TokenType: "ACCESS_TOKEN",
 	})
 
 	if err != nil || res.Status != http.StatusOK {
-		ctx.AbortWithStatus(http.StatusUnauthorized)
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "error": res.Error})
 		return
 	}
 

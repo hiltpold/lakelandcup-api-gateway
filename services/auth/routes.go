@@ -6,27 +6,36 @@ import (
 	handler "github.com/hiltpold/lakelandcup-api-gateway/services/auth/handlers"
 )
 
+func RegisterProtectedRoutes(r *gin.Engine, c *config.Config, authSvc *ServiceClient) {
+	a := InitAuthMiddleware(authSvc)
+	svc := &ServiceClient{
+		Client: InitServiceClient(c),
+	}
+
+	//version := r.Group("/v1")
+	protected := r.Group("/v1/auth/user/")
+	protected.Use(a.AuthRequired)
+	protected.GET("/info", svc.UserInfo)
+	protected.GET("/all", svc.GetUsers)
+}
+
 func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 	svc := &ServiceClient{
 		Client: InitServiceClient(c),
 	}
 
-	version := r.Group(("/v1"))
+	version := r.Group("/v1")
 	authRoutes := version.Group("/auth")
-	//userRoutes := authRoutes.Group("/user")
 
-	authRoutes.POST("/user/signup", svc.Register)
-	authRoutes.POST("/user/signin", svc.Login(c))
+	authRoutes.POST("/signup", svc.Register)
+	authRoutes.POST("/signin", svc.Login(c))
+	authRoutes.GET("/signout", svc.SignOut(c))
 	authRoutes.POST("/refreshtoken", svc.RefreshToken(c))
 	authRoutes.GET("/account/activation/:token", svc.Activation)
 	authRoutes.POST("/account/activation/token/resend", svc.ResendActivationToken)
 	authRoutes.PUT("/account/password", svc.ForgotPassword)
 	authRoutes.PUT("/account/password/reset", svc.ResetPassword)
 
-	// TODO: protect routes below
-	authRoutes.GET("/user/signout", svc.SignOut(c))
-	authRoutes.GET("/user", svc.UserInfo)
-	authRoutes.POST("/users", svc.GetUsers)
 	return svc
 }
 
@@ -46,10 +55,6 @@ func (svc *ServiceClient) SignOut(c *config.Config) gin.HandlerFunc {
 		handler.SignOut(ctx, svc.Client, c)
 	}
 	return fn
-}
-
-func (svc *ServiceClient) UserInfo(ctx *gin.Context) {
-	handler.UserInfo(ctx, svc.Client)
 }
 
 func (svc *ServiceClient) RefreshToken(c *config.Config) gin.HandlerFunc {
@@ -77,4 +82,8 @@ func (svc *ServiceClient) ResetPassword(ctx *gin.Context) {
 
 func (svc *ServiceClient) GetUsers(ctx *gin.Context) {
 	handler.GetUsers(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) UserInfo(ctx *gin.Context) {
+	handler.UserInfo(ctx, svc.Client)
 }

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,22 +8,13 @@ import (
 )
 
 func UserInfo(ctx *gin.Context, c pb.AuthServiceClient) {
-	token, _ := ctx.Cookie("lakelandcup_access_token")
-	if token == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
-		//ctx.AbortWithStatus(http.StatusUnauthorized)
+	val, _ := ctx.Get("userId")
+	userId, ok := val.(string)
+
+	if !ok {
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest})
 		return
 	}
 
-	res, err := c.Validate(context.Background(), &pb.ValidateRequest{
-		Token:     token,
-		TokenType: "ACCESS_TOKEN",
-	})
-
-	if err != nil || res.Status != http.StatusOK {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized})
-		return
-	}
-
-	ctx.JSON(http.StatusCreated, &res)
+	ctx.JSON(http.StatusCreated, &pb.ValidateResponse{Status: http.StatusCreated, UserId: userId})
 }
