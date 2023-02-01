@@ -1,4 +1,4 @@
-package franchise
+package fantasy
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,19 +8,45 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient) {
-	a := auth.InitAuthMiddleware(authSvc)
-
+	//a := auth.InitAuthMiddleware(authSvc)
 	svc := &ServiceClient{
 		Client: InitServiceClient(c),
 	}
 
-	fantasyGroup := r.Group("/v1/fantasy")
-	leagueRoutes := fantasyGroup.Group("/league")
+	fantasyGroup := r.Group("/v1/fantasy/")
 
-	leagueRoutes.Use(a.AuthRequired)
-	leagueRoutes.POST("/", svc.CreateLeague)
+	//fantasyGroup.Use(a.AuthRequired)
+	// league routes
+	fantasyGroup.POST("/league", svc.CreateLeague)
+	fantasyGroup.GET("/leagues", svc.GetLeagues)
+	fantasyGroup.POST("/league/:id", svc.UpdateLeague)
+	fantasyGroup.GET("/league/:id/franchises", svc.GetLeagueFranchises)
+	// franchise routes
+	fantasyGroup.POST("/franchise", svc.CreateFranchise)
+	// prospect routes
+	fantasyGroup.POST("/prospects", svc.CreateProspectsBulk)
 }
 
 func (svc *ServiceClient) CreateLeague(ctx *gin.Context) {
 	handler.CreateLeague(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) UpdateLeague(ctx *gin.Context) {
+	handler.UpdateLeague(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetLeagues(ctx *gin.Context) {
+	handler.GetLeagues(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetLeagueFranchises(ctx *gin.Context) {
+	handler.GetLeagueFranchises(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) CreateFranchise(ctx *gin.Context) {
+	handler.CreateFranchise(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) CreateProspectsBulk(ctx *gin.Context) {
+	handler.CreateProspectsBulk(ctx, svc.Client)
 }

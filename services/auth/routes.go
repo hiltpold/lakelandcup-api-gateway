@@ -12,7 +12,6 @@ func RegisterProtectedRoutes(r *gin.Engine, c *config.Config, authSvc *ServiceCl
 		Client: InitServiceClient(c),
 	}
 
-	//version := r.Group("/v1")
 	protected := r.Group("/v1/auth/user/")
 	protected.Use(a.AuthRequired)
 	protected.GET("/info", svc.UserInfo)

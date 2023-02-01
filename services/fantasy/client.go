@@ -1,4 +1,4 @@
-package franchise
+package fantasy
 
 import (
 	"fmt"

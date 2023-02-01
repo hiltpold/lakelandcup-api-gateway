@@ -44,6 +44,7 @@ message LoginResponse {
   string error = 2;
   string token = 3;
   string refresh_token = 4;
+  string userId = 5;
 }
 
 // Activate
