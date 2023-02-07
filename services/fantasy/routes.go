@@ -23,6 +23,7 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	fantasyGroup.GET("/league/:id/franchises", svc.GetLeagueFranchises)
 	// franchise routes
 	fantasyGroup.POST("/franchise", svc.CreateFranchise)
+	fantasyGroup.GET("/franchise/:id", svc.GetFranchise)
 	// prospect routes
 	fantasyGroup.POST("/prospects", svc.CreateProspectsBulk)
 	fantasyGroup.GET("/prospects/:text", svc.TextSearchProspects)
@@ -46,6 +47,10 @@ func (svc *ServiceClient) GetLeagueFranchises(ctx *gin.Context) {
 
 func (svc *ServiceClient) CreateFranchise(ctx *gin.Context) {
 	handler.CreateFranchise(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetFranchise(ctx *gin.Context) {
+	handler.GetFranchise(ctx, svc.Client)
 }
 
 func (svc *ServiceClient) CreateProspectsBulk(ctx *gin.Context) {

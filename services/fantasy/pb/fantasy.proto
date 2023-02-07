@@ -48,23 +48,23 @@ service FantasyService {
   }
 
   message Prospect {
-    string ID = 1;
-    string FullName = 2;
-    string FirstName = 3;
-    string LastName = 4;
-    string NhlTeam = 5;
-    string DraftYear = 6;
-    string Birthdate = 7;
-    string Height = 8;
-    string Weight = 9;
-    string NhlDraftRound = 10;
-    string NhlDraftPickOverall = 11;
-    string NhlPickInRound = 12;
-    string PositionCode = 13; 
-    string LeagueID = 14;
-    string FranchiseID = 15;
-    string PickID = 16;
-}
+      string ID = 1;
+      string FullName = 2;
+      string FirstName = 3;
+      string LastName = 4;
+      string NhlTeam = 5;
+      string DraftYear = 6;
+      string Birthdate = 7;
+      string Height = 8;
+      string Weight = 9;
+      string NhlDraftRound = 10;
+      string NhlDraftPickOverall = 11;
+      string NhlPickInRound = 12;
+      string PositionCode = 13; 
+      string LeagueID = 14;
+      string FranchiseID = 15;
+      Pick Pick = 16;
+  }
   
   message Pick {
       string ID = 1;
@@ -175,21 +175,21 @@ service FantasyService {
     Franchise result = 3;
   }
   
-// Prospects
-message CreateProspect {
-    string fullName = 1;
-    string firstName = 2;
-    string lastName = 3;
-    string nhlTeam = 4;
-    string birthdate = 5;
-    string height = 6;
-    string weight = 7;
-    string draftYear = 8;
-    string nhlDraftRound = 9;
-    string nhlDraftPickOverall = 10;
-    string nhlDraftPickInRound = 11;
-    string positionCode = 12; 
-}
+  // Prospects
+  message CreateProspect {
+      string fullName = 1;
+      string firstName = 2;
+      string lastName = 3;
+      string nhlTeam = 4;
+      string birthdate = 5;
+      string height = 6;
+      string weight = 7;
+      string draftYear = 8;
+      string nhlDraftRound = 9;
+      string nhlDraftPickOverall = 10;
+      string nhlDraftPickInRound = 11;
+      string positionCode = 12; 
+  }
 
   message CreateProspectRequest {
     Prospect prospect = 1;
