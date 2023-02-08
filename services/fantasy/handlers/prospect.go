@@ -39,3 +39,21 @@ func DraftProspect(ctx *gin.Context, c pb.FantasyServiceClient) {
 
 	ctx.JSON(http.StatusOK, &res)
 }
+
+func UndraftProspect(ctx *gin.Context, c pb.FantasyServiceClient) {
+	b := DraftProspectRequest{}
+	if err := ctx.BindJSON(&b); err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	dp := pb.DraftPick{DraftYear: b.DraftPick.DraftYear, DraftRound: b.DraftPick.DraftRound, DraftPickInRound: b.DraftPick.DraftPickInRound, DraftPickOverall: b.DraftPick.DraftPickOverall}
+	res, err := c.UndraftProspect(context.Background(), &pb.DraftProspectRequest{DraftPick: &dp, LeagueID: b.LeagueID, FranchiseID: b.FranchiseID, ProspectID: b.ProspectID})
+
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadGateway, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, &res)
+}
