@@ -23,6 +23,5 @@ func GetUsers(ctx *gin.Context, c pb.AuthServiceClient) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": http.StatusBadRequest, "error": err})
 		return
 	}
-
 	ctx.JSON(http.StatusCreated, &res)
 }

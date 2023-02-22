@@ -10,16 +10,17 @@ import (
 )
 
 type CreateLeagueRequestBody struct {
-	Admin             string `json:"admin"`
-	AdminID           string `json:"adminID"`
-	Commissioner      string `json:"commissioner"`
-	CommissionerID    string `json:"commissionerID"`
-	Name              string `json:"name"`
-	FoundationYear    string `json:"foundationYear"`
-	MaxFranchises     int32  `json:"maxFranchises,string"`
-	MaxProspects      int32  `json:"maxProspects,string"`
-	DraftRightsGoalie int32  `json:"draftRightsGoalie,string"`
-	DraftRightsSkater int32  `json:"draftRightsSkater,string"`
+	Admin             string `json:"Admin"`
+	AdminID           string `json:"AdminID"`
+	Commissioner      string `json:"Commissioner"`
+	CommissionerID    string `json:"CommissionerID"`
+	Name              string `json:"Name"`
+	FoundationYear    string `json:"FoundationYear"`
+	MaxFranchises     int32  `json:"MaxFranchises"`
+	MaxProspects      int32  `json:"MaxProspects"`
+	DraftRightsGoalie int32  `json:"DraftRightsGoalie"`
+	DraftRightsSkater int32  `json:"DraftRightsSkater"`
+	DraftRounds       int32  `json:"DraftRounds"`
 }
 
 type CreateFranchiseRequestBody struct {
@@ -31,24 +32,23 @@ type CreateFranchiseRequestBody struct {
 }
 
 type CreateProspectsBulkRequestBody struct {
-	ID string `json:"id"`
-	FullName string `json:"nhlProspectFullName"`
-	FirstName string `json:"nhlProspectFirstName"`
-	LastName string `json:"nhlProspectLastName"`
-	NhlTeam string `json:"nhlTeamName"`
-	Birthdate string `json:"nhlBirthdate"`
-	Height string `json:"nhlHeight"`
-	Weight int `json:"nhlWeight"`
-	NhlDraftYear int `json:"nhlYear"`
-	NhlDraftRound string `json:"nhlRound"`
-	NhlDraftPickOverall int `json:"nhlPickOverall"`
-	NhlDraftPickInRound int `json:"nhlPickInRound"`
-	NhlPositionCode string `json:"nhlPositionCode"`
-	LeagueID string `json:"leagueId"`
-	FranchiseID string `json:"franchiseId"`
-	PickID string `json:"pickId"`
+	ID                  string `json:"id"`
+	FullName            string `json:"nhlProspectFullName"`
+	FirstName           string `json:"nhlProspectFirstName"`
+	LastName            string `json:"nhlProspectLastName"`
+	NhlTeam             string `json:"nhlTeamName"`
+	Birthdate           string `json:"nhlBirthdate"`
+	Height              string `json:"nhlHeight"`
+	Weight              int    `json:"nhlWeight"`
+	NhlDraftYear        int    `json:"nhlYear"`
+	NhlDraftRound       string `json:"nhlRound"`
+	NhlDraftPickOverall int    `json:"nhlPickOverall"`
+	NhlDraftPickInRound int    `json:"nhlPickInRound"`
+	NhlPositionCode     string `json:"nhlPositionCode"`
+	LeagueID            string `json:"leagueId"`
+	FranchiseID         string `json:"franchiseId"`
+	PickID              string `json:"pickId"`
 }
-
 
 func CreateLeague(ctx *gin.Context, c pb.FantasyServiceClient) {
 	b := CreateLeagueRequestBody{}
@@ -112,31 +112,30 @@ func CreateProspectsBulk(ctx *gin.Context, c pb.FantasyServiceClient) {
 	}
 
 	req := pb.CreateProspectsBulkRequest{}
-	for _, p := range(b){
+	for _, p := range b {
 		tmp := pb.CreateProspect{
-			FullName: p.FullName,
-			FirstName: p.FirstName,
-			LastName: p.LastName,
-			Birthdate: p.Birthdate,
-			Height: p.Height,
-			Weight: fmt.Sprintf("%v",p.Weight),
-			NhlTeam: p.NhlTeam,
-			DraftYear: fmt.Sprintf("%v",p.NhlDraftYear),
-			NhlDraftRound: p.NhlDraftRound,
-			NhlDraftPickInRound: fmt.Sprintf("%v",p.NhlDraftPickInRound),
-			NhlDraftPickOverall: fmt.Sprintf("%v",p.NhlDraftPickOverall),
-			PositionCode: p.NhlPositionCode,
+			FullName:            p.FullName,
+			FirstName:           p.FirstName,
+			LastName:            p.LastName,
+			Birthdate:           p.Birthdate,
+			Height:              p.Height,
+			Weight:              fmt.Sprintf("%v", p.Weight),
+			NhlTeam:             p.NhlTeam,
+			DraftYear:           fmt.Sprintf("%v", p.NhlDraftYear),
+			NhlDraftRound:       p.NhlDraftRound,
+			NhlDraftPickInRound: fmt.Sprintf("%v", p.NhlDraftPickInRound),
+			NhlDraftPickOverall: fmt.Sprintf("%v", p.NhlDraftPickOverall),
+			PositionCode:        p.NhlPositionCode,
 		}
 		req.Prospects = append(req.Prospects, &tmp)
 	}
-	
+
 	res, err := c.CreateProspectsBulk(context.Background(), &req)
 
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadGateway, err)
 		return
 	}
-	
 
 	ctx.JSON(http.StatusCreated, &res)
 }

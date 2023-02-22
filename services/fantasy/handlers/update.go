@@ -6,20 +6,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/fantasy/pb"
-	"github.com/sirupsen/logrus"
 )
 
 type UpdateLeagueRequestBody struct {
-	Admin             string `json:"admin"`
-	AdminID           string `json:"adminID"`
-	Commissioner      string `json:"commissioner"`
-	CommissionerID    string `json:"commissionerID"`
-	Name              string `json:"name"`
-	FoundationYear    string `json:"foundationYear"`
-	MaxFranchises     int32  `json:"maxFranchises"`
-	MaxProspects      int32  `json:"maxProspects"`
-	DraftRightsGoalie int32  `json:"draftRightsGoalie"`
-	DraftRightsSkater int32  `json:"draftRightsSkater"`
+	Admin             string `json:"Admin"`
+	AdminID           string `json:"AdminID"`
+	Commissioner      string `json:"Commissioner"`
+	CommissionerID    string `json:"CommissionerID"`
+	Name              string `json:"Name"`
+	FoundationYear    string `json:"FoundationYear"`
+	MaxFranchises     int32  `json:"MaxFranchises"`
+	MaxProspects      int32  `json:"MaxProspects"`
+	DraftRightsGoalie int32  `json:"DraftRightsGoalie"`
+	DraftRightsSkater int32  `json:"DraftRightsSkater"`
+	DraftRounds       int32  `json:"DraftRounds"`
 }
 
 type UpdateFranchiseRequestBody struct {
@@ -38,7 +38,6 @@ func UpdateLeague(ctx *gin.Context, c pb.FantasyServiceClient) {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
-	logrus.Info(b)
 
 	lR := &pb.LeagueRequest{
 		Name:              b.Name,
@@ -51,6 +50,7 @@ func UpdateLeague(ctx *gin.Context, c pb.FantasyServiceClient) {
 		MaxProspects:      b.MaxProspects,
 		DraftRightsGoalie: b.DraftRightsGoalie,
 		DraftRightsSkater: b.DraftRightsSkater,
+		DraftRounds:       b.DraftRounds,
 	}
 
 	res, err := c.UpdateLeague(context.Background(), &pb.LeagueUpdateRequest{Id: id, League: lR})

@@ -11,7 +11,7 @@ import (
 func GetFranchise(ctx *gin.Context, c pb.FantasyServiceClient) {
 	id := ctx.Param("id")
 
-	res, err := c.GetFranchise(context.Background(), &pb.GetFranchiseRequest{FranchiseId: id})
+	res, err := c.GetFranchise(context.Background(), &pb.GetFranchiseRequest{FranchiseID: id})
 
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadGateway, err)

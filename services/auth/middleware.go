@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
+	"github.com/sirupsen/logrus"
 )
 
 type AuthMiddlewareConfig struct {
@@ -27,8 +28,9 @@ func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "error": res.Error})
 		return
 	}
-
+	logrus.Info(res)
 	ctx.Set("userId", res.UserId)
+	ctx.Set("role", res.Role)
 
 	ctx.Next()
 }
