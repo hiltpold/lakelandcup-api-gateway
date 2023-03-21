@@ -29,6 +29,8 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	fantasyGroup.GET("/prospect/:text", svc.TextSearchProspects)
 	// trade between franchises
 	fantasyGroup.POST("/league/franchise/trade", svc.Trade)
+	// update or create picks
+	fantasyGroup.POST("/league/:id/picks", svc.CreateOrUpdatePicks)
 
 	fantasyGroup.POST("/prospect/draft", svc.DraftProspect)
 	fantasyGroup.POST("/prospect/undraft", svc.UndraftProspect)
@@ -68,6 +70,10 @@ func (svc *ServiceClient) TextSearchProspects(ctx *gin.Context) {
 
 func (svc *ServiceClient) Trade(ctx *gin.Context) {
 	handler.Trade(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) CreateOrUpdatePicks(ctx *gin.Context) {
+	handler.CreateOrUpdatePicks(ctx, svc.Client)
 }
 
 func (svc *ServiceClient) DraftProspect(ctx *gin.Context) {
