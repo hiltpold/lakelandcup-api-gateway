@@ -34,8 +34,8 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	// get all picks for a given year
 	fantasyGroup.GET("/league/:id/picks/:year", svc.GetPicksByYear)
 
-	fantasyGroup.POST("/prospect/draft", svc.DraftProspect)
-	fantasyGroup.POST("/prospect/undraft", svc.UndraftProspect)
+	fantasyGroup.POST("/league/:id/draft", svc.DraftProspect)
+	fantasyGroup.POST("/league/:id/undraft", svc.UndraftProspect)
 }
 
 func (svc *ServiceClient) CreateLeague(ctx *gin.Context) {
