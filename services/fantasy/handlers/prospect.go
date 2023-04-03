@@ -50,3 +50,22 @@ func UndraftProspect(ctx *gin.Context, c pb.FantasyServiceClient) {
 
 	ctx.JSON(http.StatusOK, &res)
 }
+
+func GetProspectsByFranchise(ctx *gin.Context, c pb.FantasyServiceClient) {
+	id := ctx.Param("id")
+	year := ctx.Param("franchise")
+
+	req := &pb.GetFranchiseRequest{
+		LeagueID:    id,
+		FranchiseID: year,
+	}
+
+	res, err := c.GetProspectsByFranchise(context.Background(), req)
+
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadGateway, err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, &res)
+}

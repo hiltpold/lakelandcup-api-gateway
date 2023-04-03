@@ -28,11 +28,15 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	fantasyGroup.POST("/prospect", svc.CreateProspectsBulk)
 	fantasyGroup.GET("/prospect/:text", svc.TextSearchProspects)
 	// trade between franchises
-	fantasyGroup.POST("/league/franchise/trade", svc.Trade)
+	fantasyGroup.POST("/league/:id/franchise/trade", svc.Trade)
 	// update or create picks according to draft lottery
 	fantasyGroup.POST("/league/:id/picks", svc.CreateOrUpdatePicks)
 	// get all picks for a given year
 	fantasyGroup.GET("/league/:id/picks/:year", svc.GetPicksByYear)
+	// get all picks for a given franchise
+	fantasyGroup.GET("/league/:id/franchise/:franchise/picks", svc.GetPicksByFranchise)
+	// get all prospects for a given franchise
+	fantasyGroup.GET("/league/:id/franchise/:franchise/prospects", svc.GetProspectsByFranchise)
 
 	fantasyGroup.POST("/league/:id/draft", svc.DraftProspect)
 	fantasyGroup.POST("/league/:id/undraft", svc.UndraftProspect)
@@ -80,6 +84,14 @@ func (svc *ServiceClient) CreateOrUpdatePicks(ctx *gin.Context) {
 
 func (svc *ServiceClient) GetPicksByYear(ctx *gin.Context) {
 	handler.GetPicksByYear(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetPicksByFranchise(ctx *gin.Context) {
+	handler.GetPicksByFranchise(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) GetProspectsByFranchise(ctx *gin.Context) {
+	handler.GetProspectsByFranchise(ctx, svc.Client)
 }
 
 func (svc *ServiceClient) DraftProspect(ctx *gin.Context) {
