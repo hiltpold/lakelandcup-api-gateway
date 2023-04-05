@@ -22,7 +22,7 @@ func serve(c *conf.Configuration) {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:8080"}
+	config.AllowOrigins = []string{"*"}
 	config.AllowCredentials = true
 	//config.AllowMethods = []string{"GET", "POST"}
 
