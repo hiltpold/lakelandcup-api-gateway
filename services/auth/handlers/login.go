@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiltpold/lakelandcup-api-gateway/config"
+	"github.com/hiltpold/lakelandcup-api-gateway/conf"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
 	"github.com/sirupsen/logrus"
 )
@@ -16,7 +16,7 @@ type LoginRequestBody struct {
 	Password string `json:"password"`
 }
 
-func Login(ctx *gin.Context, c pb.AuthServiceClient, config *config.Config) {
+func Login(ctx *gin.Context, c pb.AuthServiceClient, config *conf.Configuration) {
 	b := LoginRequestBody{}
 
 	if err := ctx.BindJSON(&b); err != nil {

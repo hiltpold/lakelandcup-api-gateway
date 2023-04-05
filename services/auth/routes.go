@@ -2,11 +2,11 @@ package auth
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/hiltpold/lakelandcup-api-gateway/config"
+	"github.com/hiltpold/lakelandcup-api-gateway/conf"
 	handler "github.com/hiltpold/lakelandcup-api-gateway/services/auth/handlers"
 )
 
-func RegisterProtectedRoutes(r *gin.Engine, c *config.Config, authSvc *ServiceClient) {
+func RegisterProtectedRoutes(r *gin.Engine, c *conf.Configuration, authSvc *ServiceClient) {
 	a := InitAuthMiddleware(authSvc)
 	svc := &ServiceClient{
 		Client: InitServiceClient(c),
@@ -18,7 +18,7 @@ func RegisterProtectedRoutes(r *gin.Engine, c *config.Config, authSvc *ServiceCl
 	protected.GET("/all", svc.GetUsers)
 }
 
-func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
+func RegisterRoutes(r *gin.Engine, c *conf.Configuration) *ServiceClient {
 	svc := &ServiceClient{
 		Client: InitServiceClient(c),
 	}
@@ -42,21 +42,21 @@ func (svc *ServiceClient) Register(ctx *gin.Context) {
 	handler.Register(ctx, svc.Client)
 }
 
-func (svc *ServiceClient) Login(c *config.Config) gin.HandlerFunc {
+func (svc *ServiceClient) Login(c *conf.Configuration) gin.HandlerFunc {
 	fn := func(ctx *gin.Context) {
 		handler.Login(ctx, svc.Client, c)
 	}
 	return fn
 }
 
-func (svc *ServiceClient) SignOut(c *config.Config) gin.HandlerFunc {
+func (svc *ServiceClient) SignOut(c *conf.Configuration) gin.HandlerFunc {
 	fn := func(ctx *gin.Context) {
 		handler.SignOut(ctx, svc.Client, c)
 	}
 	return fn
 }
 
-func (svc *ServiceClient) RefreshToken(c *config.Config) gin.HandlerFunc {
+func (svc *ServiceClient) RefreshToken(c *conf.Configuration) gin.HandlerFunc {
 	fn := func(ctx *gin.Context) {
 		handler.RefreshToken(ctx, svc.Client, c)
 	}

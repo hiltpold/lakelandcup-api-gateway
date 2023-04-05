@@ -4,13 +4,13 @@ WORKDIR /app
 COPY go.* /app/
 RUN go mod download
 COPY . .
-RUN go build -o server main.go
+RUN CGO_ENABLED=0 go build -o lakelandcup-api-gateway main.go
 
 # Stage 2: build the image
 FROM alpine:latest  
 RUN apk --no-cache add ca-certificates libc6-compat
 WORKDIR /app/
-COPY --from=build /app/server .
-COPY --from=build /app/config/envs/app.env /app/config/envs/
+COPY --from=build /app/lakelandcup-api-gateway .
+COPY --from=build /app/.prod.env /app/.prod.env
 EXPOSE 50000
-CMD ["./server"]  
+CMD ["./lakelandcup-api-gateway","-c",".prod.env"]  

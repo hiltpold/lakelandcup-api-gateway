@@ -2,12 +2,12 @@ package fantasy
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/hiltpold/lakelandcup-api-gateway/config"
+	"github.com/hiltpold/lakelandcup-api-gateway/conf"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth"
 	handler "github.com/hiltpold/lakelandcup-api-gateway/services/fantasy/handlers"
 )
 
-func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient) {
+func RegisterRoutes(r *gin.Engine, c *conf.Configuration, authSvc *auth.ServiceClient) {
 	//a := auth.InitAuthMiddleware(authSvc)
 	svc := &ServiceClient{
 		Client: InitServiceClient(c),

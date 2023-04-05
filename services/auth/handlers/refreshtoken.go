@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hiltpold/lakelandcup-api-gateway/config"
+	"github.com/hiltpold/lakelandcup-api-gateway/conf"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth/pb"
 )
 
@@ -13,7 +13,7 @@ type RefreshTokenRequestBody struct {
 	string `json:"refresh_token"`
 }
 
-func RefreshToken(ctx *gin.Context, c pb.AuthServiceClient, config *config.Config) {
+func RefreshToken(ctx *gin.Context, c pb.AuthServiceClient, config *conf.Configuration) {
 	refreshToken, getRefreshTokenErr := ctx.Cookie("lakelandcup_refresh_token")
 
 	if getRefreshTokenErr != nil {

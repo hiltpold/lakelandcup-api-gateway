@@ -1,34 +1,34 @@
 package main
 
 import (
-	"log"
-
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
-	"github.com/hiltpold/lakelandcup-api-gateway/config"
-	"github.com/hiltpold/lakelandcup-api-gateway/services/auth"
-	"github.com/hiltpold/lakelandcup-api-gateway/services/fantasy"
+	"github.com/hiltpold/lakelandcup-api-gateway/commands"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	c, err := config.LoadConfig()
-
-	if err != nil {
-		log.Fatalln("Failed at config", err)
+	if err := commands.RootCommand().Execute(); err != nil {
+		logrus.Fatal(err)
 	}
+	/*
+		c, err := config.LoadConfig()
 
-	r := gin.Default()
+		if err != nil {
+			log.Fatalln("Failed at config", err)
+		}
 
-	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:8080"}
-	config.AllowCredentials = true
-	//config.AllowMethods = []string{"GET", "POST"}
+		r := gin.Default()
 
-	r.Use(cors.New(config))
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{"http://localhost:8080"}
+		config.AllowCredentials = true
+		//config.AllowMethods = []string{"GET", "POST"}
 
-	authSvc := *auth.RegisterRoutes(r, &c)
-	auth.RegisterProtectedRoutes(r, &c, &authSvc)
-	fantasy.RegisterRoutes(r, &c, &authSvc)
+		r.Use(cors.New(config))
 
-	r.Run(":" + c.Port)
+		authSvc := *auth.RegisterRoutes(r, &c)
+		auth.RegisterProtectedRoutes(r, &c, &authSvc)
+		fantasy.RegisterRoutes(r, &c, &authSvc)
+
+		r.Run(":" + c.Port)
+	*/
 }
