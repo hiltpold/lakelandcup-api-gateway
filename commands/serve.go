@@ -1,11 +1,14 @@
 package commands
 
 import (
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hiltpold/lakelandcup-api-gateway/conf"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/auth"
 	"github.com/hiltpold/lakelandcup-api-gateway/services/fantasy"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +25,15 @@ func serve(c *conf.Configuration) {
 	r := gin.Default()
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"*"}
+	allowedOrigin := ""
+	if os.Getenv("ENV") == "dev" {
+		allowedOrigin = "http://localhost:8080"
+	} else if os.Getenv("ENV") == "prod" {
+		allowedOrigin = "*"
+	} else {
+		logrus.Fatal("configure the ENV variable in the .(dev|prod).env accordingly to prod or dev")
+	}
+	config.AllowOrigins = []string{allowedOrigin}
 	config.AllowCredentials = true
 	//config.AllowMethods = []string{"GET", "POST"}
 

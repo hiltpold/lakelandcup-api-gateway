@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/hiltpold/lakelandcup-api-gateway/conf"
@@ -36,8 +37,16 @@ func Login(ctx *gin.Context, c pb.AuthServiceClient, config *conf.Configuration)
 
 	//ctx.SetSameSite(http.SameSiteLaxMode)
 	//TODO: better configurability, especially for productional system
-	ctx.SetCookie("lakelandcup_refresh_token", res.RefreshToken, config.RefreshTokenMaxAge*60, "/", "localhost", false, true)
-	ctx.SetCookie("lakelandcup_access_token", res.Token, config.AccessTokenMaxAge*60, "/", "localhost", false, true)
+	domain := ""
+	if os.Getenv("ENV") == "dev" {
+		domain = "localhost"
+	} else if os.Getenv("ENV") == "prod" {
+		domain = "lakelandcup.ch"
+	} else {
+		logrus.Fatal("configure the ENV variable in the .(dev|prod).env accordingly to prod or dev")
+	}
+	ctx.SetCookie("lakelandcup_refresh_token", res.RefreshToken, config.RefreshTokenMaxAge*60, "/", domain, false, true)
+	ctx.SetCookie("lakelandcup_access_token", res.Token, config.AccessTokenMaxAge*60, "/", domain, false, true)
 	ctx.JSON(http.StatusCreated, &res)
 	logrus.Info(fmt.Sprintf("%v", ctx.Request.Cookies()))
 }
