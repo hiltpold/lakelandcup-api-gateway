@@ -73,6 +73,7 @@ service FantasyService {
       string LeagueID = 14;
       string FranchiseID = 15;
       Pick Pick = 16;
+      string Protected = 17;
   }
 	
   message Pick {
